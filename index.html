@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agentic AI 互動學習網頁</title>
+    <title>空中英語互動學習 - 多篇切換版</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
@@ -24,297 +24,154 @@
         const { useState, useEffect } = React;
 
         const Icon = ({ name, size = 18, className = "" }) => {
-            useEffect(() => {
-                if (window.lucide) {
-                    window.lucide.createIcons();
-                }
-            }, [name]);
+            useEffect(() => { if (window.lucide) window.lucide.createIcons(); }, [name]);
             return <i data-lucide={name} className={className} style={{ width: size, height: size }}></i>;
         };
 
+        // --- 文章資料庫開始 ---
+        const allArticles = [
+            {
+                id: 1,
+                title: "Agentic AI 智慧代理人",
+                content: [
+                    {
+                        headingEn: "What is agentic AI?",
+                        headingZh: "什麼是智慧代理人？",
+                        contentEn: "As artificial intelligence becomes more advanced, one of the newest developments is called agentic AI. Unlike traditional systems that simply answer questions, agentic AI can simplify large problems by breaking them into smaller steps.",
+                        contentZh: "隨著人工智慧變得越來越先進，其中一項最新的發展被稱為智慧代理人。與僅僅回答問題的傳統系統不同，智慧代理人可以將大問題分解成更小的步驟。"
+                    }
+                ],
+                vocab: [
+                    { word: "advanced", pos: "adj.", ipa: "/ədˈvænst/", trans: "先進的", exEn: "Agentic AI is an advanced technology.", exZh: "智慧代理人是一項先進的技術。" }
+                ]
+            },
+            {
+                id: 2,
+                title: "都柏林文化之旅",
+                content: [
+                    {
+                        headingEn: "Explore Dublin's History",
+                        headingZh: "探索都柏林的歷史",
+                        contentEn: "Dublin is a city rich in history, from its Viking origins to its stunning Georgian architecture. It is known for its cultural heritage.",
+                        contentZh: "都柏林是一座歷史悠久的城市，從維京起源到令人驚嘆的喬治亞風格建築。它以文化遺產聞名。"
+                    }
+                ],
+                vocab: [
+                    { word: "heritage", pos: "n.", ipa: "/ˈherɪtɪdʒ/", trans: "遺產；繼承物", exEn: "The city has a rich cultural heritage.", exZh: "這座城市擁有豐富的文化遺產。" },
+                    { word: "stunning", pos: "adj.", ipa: "/ˈstʌnɪŋ/", trans: "極漂亮的；驚人的", exEn: "The architecture in Dublin is stunning.", exZh: "都柏林的建築美得令人驚嘆。" }
+                ]
+            }
+        ];
+        // --- 文章資料庫結束 ---
+
         const App = () => {
+            const [articleIdx, setArticleIdx] = useState(0);
             const [activeTab, setActiveTab] = useState('article');
             const [cardIndex, setCardIndex] = useState(0);
             const [isFlipped, setIsFlipped] = useState(false);
-            const [quizScore, setQuizScore] = useState({ q1: null, q2: '' });
-            const [showScore, setShowScore] = useState(false);
             const [isSpeaking, setIsSpeaking] = useState(false);
 
-            const fullContent = [
-                {
-                    headingEn: "What is agentic AI?",
-                    headingZh: "什麼是智慧代理人？",
-                    contentEn: "As artificial intelligence becomes more advanced, one of the newest developments is called agentic AI. The word agentic comes from the word agent, which describes someone or something that takes action. Unlike traditional systems that simply answer questions, agentic AI can simplify large problems by breaking them into smaller steps, remembering past actions, and adapting in fast-changing situations. In other words, it is more like a coworker who takes initiative than a tool that waits for orders.",
-                    contentZh: "隨著人工智慧變得越來越先進，其中一項最新的發展被稱為智慧代理人。Agentic 這個詞源自 agent（代理人），它描述了會採取行動的人或事物。與僅僅回答問題的傳統系統不同，智慧代理人可以將大問題分解成更小的步驟，記住過去的行動，並適應快速變化的情況，從而簡化問題。換句話說，它更像是一個會主動的同事，而不是一個等候命令的工具。"
-                },
-                {
-                    headingEn: "Why now?",
-                    headingZh: "為何是現在？",
-                    contentEn: "This shift is possible because of progress in large language models (LLMs), planning methods, and memory systems. Developers are also building frameworks that connect to the internet and software tools. Together, these features allow AI agents to research, plan, and act without constant human direction. By combining reasoning, memory, and tool use, agentic AI is optimized for performing longer, more complex tasks with fewer interruptions.",
-                    contentZh: "這項轉變之所以可能，是因為大型語言模型（LLMs）、規劃方法和記憶系統的進步。開發者也正在建立連接到網際網路和軟體工具的框架。這些功能共同使 AI 代理人無需持續的人類指示即可進行研究、規劃和行動。透過結合推理、記憶和工具使用，智慧代理人經過優化，能夠以更少的中斷來執行更長、更複雜的任務。"
-                },
-                {
-                    headingEn: "Why it matters",
-                    headingZh: "為何它很重要",
-                    contentEn: "Agentic AI is not just a new feature — it is representative of a deeper change in how we use technology. By moving from “answering” to “acting,” these systems have the potential to transform the way people learn, work, and solve problems. Many experts believe this step marks a key milestone in the story of artificial intelligence, opening the door to a new generation of agentic helpers.",
-                    contentZh: "智慧代理人不僅僅是一個新功能——它代表了我們使用技術方式的更深層次變化。透過從「回答」轉變為「行動」，這些系統有潛力徹底改變人們學習、工作和解決問題的方式。許多專家認為這一步標誌著人工智慧發展歷程中的一個關鍵里程碑，為新一代的智慧代理人助手開啟了大門。"
-                }
-            ];
-
-            const vocabulary = [
-                { word: "advanced", pos: "adj.", ipa: "/ədˈvænst/", trans: "先進的；高等的", exEn: "Agentic AI is an advanced technology.", exZh: "智慧代理人是一項先進的技術。" },
-                { word: "development", pos: "n.", ipa: "/dɪˈvɛləpmənt/", trans: "發展；開發；新事物", exEn: "One of the newest developments is called agentic AI.", exZh: "其中一項最新的發展被稱為智慧代理人。" },
-                { word: "agentic", pos: "adj.", ipa: "/eɪˈdʒɛntɪk/", trans: "代理的；具有代理人特性的", exEn: "The article discusses the concept of agentic AI.", exZh: "這篇文章探討了智慧代理人人工智慧的概念。" },
-                { word: "simplify", pos: "v.", ipa: "/ˈsɪmplɪfaɪ/", trans: "簡化", exEn: "Agentic AI can simplify large problems.", exZh: "智慧代理人可以簡化大問題。" },
-                { word: "adapt", pos: "v.", ipa: "/əˈdæpt/", trans: "適應；調整", exEn: "It can adapt in fast-changing situations.", exZh: "它可以在快速變化的情況下適應。" },
-                { word: "initiative", pos: "n.", ipa: "/ɪˈnɪʃətɪv/", trans: "主動性；進取心", exEn: "It is more like a coworker who takes initiative.", exZh: "它更像是一個會主動的同事。" },
-                { word: "shift", pos: "n.", ipa: "/ʃɪft/", trans: "轉變；改變", exEn: "This shift is possible because of progress in LLMs.", exZh: "這項轉變之所以可能，是因為大型語言模型的進步。" },
-                { word: "framework", pos: "n.", ipa: "/ˈfreɪmwɜːrk/", trans: "框架；骨架", exEn: "Developers are building frameworks that connect to the internet.", exZh: "開發者正在建立連接到網際網路的框架。" },
-                { word: "reasoning", pos: "n.", ipa: "/ˈriːzənɪŋ/", trans: "推理；推論", exEn: "By combining reasoning, memory, and tool use, agentic AI is optimized.", exZh: "透過結合推理、記憶與工具使用，智慧代理人經過優化。" },
-                { word: "optimize", pos: "v.", ipa: "/ˈɒptɪmaɪz/", trans: "優化；使最佳化", exEn: "Agentic AI is optimized for performing complex tasks.", exZh: "智慧代理人經過優化，能夠執行複雜的任務。" },
-                { word: "interruption", pos: "n.", ipa: "/ˌɪntəˈrʌpʃən/", trans: "中斷；打擾", exEn: "It performs tasks with fewer interruptions.", exZh: "它以更少中斷的方式執行任務。" },
-                { word: "representative", pos: "adj.", ipa: "/ˌrɛprɪˈzɛntətɪv/", trans: "代表性的；典型的", exEn: "It is representative of a deeper change.", exZh: "它代表著一個更深層次的變化。" },
-                { word: "potential", pos: "n.", ipa: "/pəˈtɛnʃəl/", trans: "潛力；可能性", exEn: "These systems have the potential to transform the way people learn.", exZh: "這些系統有潛力徹底改變人們學習的方式。" },
-                { word: "transform", pos: "v.", ipa: "/trænsˈfɔːrm/", trans: "徹底改變；轉變", exEn: "They have the potential to transform the way people learn.", exZh: "它們有潛力徹底改變人們學習的方式。" },
-                { word: "milestone", pos: "n.", ipa: "/ˈmaɪlstəʊn/", trans: "里程碑", exEn: "This step marks a key milestone in the story of artificial intelligence.", exZh: "這一步標誌著人工智慧發展歷程中的一個關鍵里程碑。" },
-                { word: "efficient", pos: "adj.", ipa: "/ɪˈfɪʃənt/", trans: "效率高的", exEn: "Agentic AI makes factory work more efficient.", exZh: "智慧代理人使工廠工作更高效。" },
-                { word: "logistics", pos: "n.", ipa: "/ləˈdʒɪstɪks/", trans: "物流；後勤", exEn: "AI agents manage logistics efficiently.", exZh: "AI 代理人高效管理物流。" },
-                { word: "institution", pos: "n.", ipa: "/ˌɪnstɪˈtuːʃən/", trans: "機構；建立", exEn: "They help financial institutions track markets.", exZh: "它們協助金融機構追蹤市場。" }
-            ];
+            const activeArticle = allArticles[articleIdx];
 
             const handleSpeak = (text) => {
                 if ('speechSynthesis' in window) {
                     window.speechSynthesis.cancel();
                     const utterance = new SpeechSynthesisUtterance(text);
                     utterance.lang = 'en-US';
-                    utterance.rate = 0.9; // 稍微放慢一點點方便聽清楚
                     utterance.onstart = () => setIsSpeaking(true);
                     utterance.onend = () => setIsSpeaking(false);
                     window.speechSynthesis.speak(utterance);
                 }
             };
 
-            const stopSpeaking = () => {
-                window.speechSynthesis.cancel();
-                setIsSpeaking(false);
-            };
-
             return (
                 <div className="min-h-screen p-2 md:p-8">
                     <div className="max-w-5xl mx-auto">
                         <header className="mb-6 text-center">
-                            <h1 className="text-3xl md:text-4xl font-bold text-indigo-700 mb-2">Agentic AI 互動學習網頁</h1>
-                            <p className="text-slate-500 italic">智慧代理人：全功能發音加強版</p>
+                            <h1 className="text-3xl md:text-4xl font-bold text-indigo-700 mb-4">空中英語互動學習</h1>
+                            
+                            {/* 重要：切換文章的下拉選單 */}
+                            <div className="flex justify-center items-center gap-2 bg-white p-3 rounded-xl shadow-sm max-w-sm mx-auto border-2 border-indigo-500">
+                                <Icon name="book-open-check" className="text-indigo-500" />
+                                <span className="text-sm font-bold text-slate-400">選擇文章：</span>
+                                <select 
+                                    value={articleIdx} 
+                                    onChange={(e) => {
+                                        setArticleIdx(Number(e.target.value));
+                                        setCardIndex(0);
+                                        setIsFlipped(false);
+                                    }}
+                                    className="bg-transparent font-bold text-indigo-700 outline-none cursor-pointer text-lg"
+                                >
+                                    {allArticles.map((art, index) => (
+                                        <option key={art.id} value={index}>{art.title}</option>
+                                    ))}
+                                </select>
+                            </div>
                         </header>
 
-                        <nav className="flex flex-wrap gap-1 mb-6 border-b border-slate-200 overflow-x-auto whitespace-nowrap">
-                            <button onClick={() => setActiveTab('article')} className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${activeTab === 'article' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-slate-500'}`}>
-                                <Icon name="book-open" /> 原文閱讀
-                            </button>
-                            <button onClick={() => setActiveTab('translation')} className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${activeTab === 'translation' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-slate-500'}`}>
-                                <Icon name="languages" /> 全文對照
-                            </button>
-                            <button onClick={() => setActiveTab('vocab_list')} className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${activeTab === 'vocab_list' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-slate-500'}`}>
-                                <Icon name="list" /> 重點單字
-                            </button>
-                            <button onClick={() => setActiveTab('flashcards')} className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${activeTab === 'flashcards' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-slate-500'}`}>
-                                <Icon name="id-card" /> 翻卡練習
-                            </button>
-                            <button onClick={() => setActiveTab('quiz')} className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${activeTab === 'quiz' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-slate-500'}`}>
-                                <Icon name="check-circle" /> 互動測驗
-                            </button>
+                        {/* 導覽列 */}
+                        <nav className="flex justify-around mb-6 border-b border-slate-200">
+                            {['article', 'vocab_list', 'flashcards'].map(tab => (
+                                <button key={tab} onClick={() => setActiveTab(tab)} className={`px-4 py-3 text-sm font-bold border-b-2 transition-colors ${activeTab === tab ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-slate-500'}`}>
+                                    {tab === 'article' ? '原文內容' : tab === 'vocab_list' ? '重點單字' : '翻卡練習'}
+                                </button>
+                            ))}
                         </nav>
 
-                        <main className="bg-white rounded-2xl shadow-md p-4 md:p-8 min-h-[600px]">
+                        <main className="bg-white rounded-2xl shadow-md p-4 min-h-[500px]">
                             {activeTab === 'article' && (
                                 <div className="space-y-6">
-                                    <div className="flex justify-between items-center bg-indigo-50 p-4 rounded-lg border-l-4 border-indigo-500">
-                                        <div>
-                                            <p className="font-bold text-indigo-900">TECHNOLOGY No. 09</p>
-                                            <h2 className="text-2xl font-bold text-indigo-800">How a new kind of AI could change your world</h2>
+                                    <h2 className="text-2xl font-bold text-indigo-800 border-l-4 border-indigo-500 pl-4">{activeArticle.title}</h2>
+                                    {activeArticle.content.map((sec, i) => (
+                                        <div key={i} className="p-4 bg-slate-50 rounded-xl">
+                                            <div className="flex justify-between items-center mb-2">
+                                                <h3 className="font-bold text-indigo-700">{sec.headingEn}</h3>
+                                                <button onClick={() => handleSpeak(sec.contentEn)} className="p-2 bg-indigo-100 rounded-full text-indigo-600"><Icon name="volume-2" /></button>
+                                            </div>
+                                            <p className="text-lg mb-2">{sec.contentEn}</p>
+                                            <p className="text-slate-500 text-sm border-t pt-2">{sec.contentZh}</p>
                                         </div>
-                                        <button 
-                                            onClick={() => isSpeaking ? stopSpeaking() : handleSpeak(fullContent.map(s => `${s.headingEn}. ${s.contentEn}`).join(' '))}
-                                            className={`p-3 rounded-full text-white shadow transition-all ${isSpeaking ? 'bg-red-500 animate-pulse' : 'bg-indigo-600 hover:bg-indigo-700'}`}
-                                        >
-                                            <Icon name={isSpeaking ? "square" : "volume-2"} size={24} />
-                                        </button>
-                                    </div>
-                                    <div className="prose prose-slate max-w-none space-y-6 text-lg text-slate-700 leading-relaxed">
-                                        {fullContent.map((section, idx) => (
-                                            <div key={idx}>
-                                                <h3 className="text-xl font-bold text-indigo-700 mt-6 mb-2">{section.headingEn}</h3>
-                                                <p className="hover:bg-indigo-50 p-2 rounded transition-colors group cursor-pointer" onClick={() => handleSpeak(section.contentEn)}>
-                                                    {section.contentEn} <Icon name="play" size={14} className="inline opacity-0 group-hover:opacity-100 ml-1 text-indigo-400" />
-                                                </p>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
-
-                            {activeTab === 'translation' && (
-                                <div className="space-y-8">
-                                    {fullContent.map((section, idx) => (
-                                        <section key={idx} className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-6 border-b border-slate-100">
-                                            <div className="bg-slate-50 p-4 rounded-xl border border-slate-100">
-                                                <div className="flex justify-between items-start mb-2">
-                                                    <h4 className="font-bold text-indigo-600">{section.headingEn}</h4>
-                                                    <button onClick={() => handleSpeak(section.contentEn)} className="text-indigo-400 hover:text-indigo-600"><Icon name="volume-2" size={16} /></button>
-                                                </div>
-                                                <p className="text-slate-800 italic leading-relaxed">{section.contentEn}</p>
-                                            </div>
-                                            <div className="bg-indigo-50/30 p-4 rounded-xl border border-indigo-50">
-                                                <h4 className="font-bold text-slate-500 mb-2">{section.headingZh}</h4>
-                                                <p className="text-slate-800 leading-relaxed">{section.contentZh}</p>
-                                            </div>
-                                        </section>
                                     ))}
                                 </div>
                             )}
 
                             {activeTab === 'vocab_list' && (
-                                <div className="overflow-x-auto rounded-xl border border-slate-200">
-                                    <table className="w-full text-left border-collapse">
-                                        <thead className="bg-slate-100 text-slate-600 uppercase text-xs font-bold">
-                                            <tr>
-                                                <th className="p-4 border-b">單字 / 音標</th>
-                                                <th className="p-4 border-b">詞性 / 翻譯</th>
-                                                <th className="p-4 border-b">例句與發音</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody className="divide-y divide-slate-100">
-                                            {vocabulary.map((item, idx) => (
-                                                <tr key={idx} className="hover:bg-slate-50 transition-colors align-top">
-                                                    <td className="p-4">
-                                                        <div className="font-bold text-indigo-600 flex items-center gap-1">
-                                                            {item.word} 
-                                                            <button onClick={() => handleSpeak(item.word)} className="bg-indigo-100 text-indigo-600 p-1 rounded hover:bg-indigo-200"><Icon name="volume-2" size={14} /></button>
-                                                        </div>
-                                                        <div className="text-xs text-slate-400 font-mono mt-1">{item.ipa}</div>
-                                                    </td>
-                                                    <td className="p-4 font-medium">
-                                                        <span className="text-[10px] bg-indigo-100 text-indigo-600 px-1.5 py-0.5 rounded mr-1 uppercase">{item.pos}</span>
-                                                        {item.trans}
-                                                    </td>
-                                                    <td className="p-4">
-                                                        <div className="bg-indigo-50/50 p-3 rounded-lg text-sm italic border-l-4 border-indigo-200 relative group">
-                                                            <div className="pr-8">
-                                                                "{item.exEn}"
-                                                                <div className="text-xs text-slate-500 not-italic mt-1">{item.exZh}</div>
-                                                            </div>
-                                                            <button 
-                                                                onClick={() => handleSpeak(item.exEn)} 
-                                                                className="absolute right-2 top-2 p-1.5 text-indigo-400 hover:text-indigo-600 hover:bg-white rounded-full transition-all"
-                                                                title="播放例句"
-                                                            >
-                                                                <Icon name="volume-1" size={16} />
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
+                                <div className="space-y-4">
+                                    {activeArticle.vocab.map((v, i) => (
+                                        <div key={i} className="p-4 border rounded-xl flex justify-between items-center">
+                                            <div>
+                                                <div className="font-bold text-indigo-600 text-xl">{v.word} <span className="text-xs font-normal text-slate-400">{v.ipa}</span></div>
+                                                <div className="text-slate-700">{v.trans}</div>
+                                                <div className="text-xs text-slate-400 italic mt-1">"{v.exEn}"</div>
+                                            </div>
+                                            <button onClick={() => handleSpeak(v.word)} className="p-3 bg-indigo-50 rounded-full text-indigo-600"><Icon name="volume-2" /></button>
+                                        </div>
+                                    ))}
                                 </div>
                             )}
 
                             {activeTab === 'flashcards' && (
-                                <div className="flex flex-col items-center justify-center space-y-8 py-10">
-                                    <div className="text-center font-bold text-indigo-600">
-                                        Card {cardIndex + 1} / {vocabulary.length}
-                                    </div>
-                                    <div 
-                                        className="relative w-full max-w-md h-80 cursor-pointer perspective-1000"
-                                        onClick={() => setIsFlipped(!isFlipped)}
-                                    >
+                                <div className="flex flex-col items-center py-10">
+                                    <div className="relative w-full max-w-xs h-80 cursor-pointer perspective-1000" onClick={() => setIsFlipped(!isFlipped)}>
                                         <div className={`relative w-full h-full transition-transform duration-500 preserve-3d ${isFlipped ? '[transform:rotateY(180deg)]' : ''}`}>
-                                            {/* 正面：單字發音 */}
-                                            <div className="absolute inset-0 bg-indigo-600 text-white rounded-3xl flex flex-col items-center justify-center p-8 backface-hidden shadow-xl">
-                                                <div className="flex items-center gap-3 mb-2">
-                                                    <h2 className="text-4xl md:text-5xl font-bold">{vocabulary[cardIndex].word}</h2>
-                                                    <button 
-                                                        onClick={(e) => {
-                                                            e.stopPropagation();
-                                                            handleSpeak(vocabulary[cardIndex].word);
-                                                        }} 
-                                                        className="bg-white/20 hover:bg-white/30 p-3 rounded-full transition-colors"
-                                                    >
-                                                        <Icon name="volume-2" size={28} />
-                                                    </button>
-                                                </div>
-                                                <p className="text-indigo-200 font-mono text-lg">{vocabulary[cardIndex].ipa}</p>
-                                                <p className="text-indigo-300 text-xs mt-10 opacity-70">點擊卡片空白處翻看註解</p>
+                                            <div className="absolute inset-0 bg-indigo-600 text-white rounded-3xl flex flex-col items-center justify-center p-6 backface-hidden shadow-xl text-center">
+                                                <h2 className="text-4xl font-bold mb-4">{activeArticle.vocab[cardIndex].word}</h2>
+                                                <button onClick={(e) => {e.stopPropagation(); handleSpeak(activeArticle.vocab[cardIndex].word)}} className="p-4 bg-white/20 rounded-full"><Icon name="volume-2" size={32} /></button>
                                             </div>
-
-                                            {/* 背面：例句發音 */}
-                                            <div className="absolute inset-0 bg-white border-2 border-indigo-600 rounded-3xl flex flex-col items-center justify-center p-8 backface-hidden [transform:rotateY(180deg)] shadow-xl overflow-hidden">
-                                                <div className="flex items-center gap-3 mb-4">
-                                                    <h3 className="text-3xl font-bold text-indigo-600">{vocabulary[cardIndex].trans}</h3>
-                                                    <button 
-                                                        onClick={(e) => {
-                                                            e.stopPropagation();
-                                                            handleSpeak(vocabulary[cardIndex].trans); // 雖然是中文，但 TTS 也可讀出
-                                                        }} 
-                                                        className="text-slate-300 hover:text-indigo-400 transition-colors"
-                                                    >
-                                                        <Icon name="message-square" size={18} />
-                                                    </button>
-                                                </div>
-                                                <div className="text-center bg-slate-50 p-4 rounded-xl w-full text-sm relative">
-                                                    <p className="italic mb-2 font-serif text-slate-700">"{vocabulary[cardIndex].exEn}"</p>
-                                                    <p className="text-slate-400">{vocabulary[cardIndex].exZh}</p>
-                                                    <button 
-                                                        onClick={(e) => {
-                                                            e.stopPropagation();
-                                                            handleSpeak(vocabulary[cardIndex].exEn);
-                                                        }} 
-                                                        className="mt-3 bg-indigo-50 text-indigo-600 px-4 py-1.5 rounded-full flex items-center gap-2 mx-auto hover:bg-indigo-100 transition-colors"
-                                                    >
-                                                        <Icon name="volume-2" size={14} /> 聽例句發音
-                                                    </button>
-                                                </div>
+                                            <div className="absolute inset-0 bg-white border-4 border-indigo-600 rounded-3xl flex flex-col items-center justify-center p-6 backface-hidden [transform:rotateY(180deg)] shadow-xl text-center">
+                                                <h3 className="text-3xl font-bold text-indigo-600 mb-4">{activeArticle.vocab[cardIndex].trans}</h3>
+                                                <p className="text-slate-500 italic">"{activeArticle.vocab[cardIndex].exEn}"</p>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="flex gap-4">
-                                        <button onClick={() => {setCardIndex(i => (i-1+vocabulary.length)%vocabulary.length); setIsFlipped(false)}} className="p-4 bg-slate-100 rounded-full hover:bg-slate-200"><Icon name="chevron-left" /></button>
-                                        <button onClick={() => setIsFlipped(!isFlipped)} className="px-8 py-3 bg-indigo-600 text-white rounded-full font-bold shadow-lg hover:bg-indigo-700">翻轉卡片</button>
-                                        <button onClick={() => {setCardIndex(i => (i+1)%vocabulary.length); setIsFlipped(false)}} className="p-4 bg-slate-100 rounded-full hover:bg-slate-200"><Icon name="chevron-right" /></button>
+                                    <div className="flex gap-10 mt-10">
+                                        <button onClick={() => setCardIndex(p => (p-1+activeArticle.vocab.length)%activeArticle.vocab.length)} className="p-4 bg-slate-100 rounded-full"><Icon name="chevron-left" /></button>
+                                        <button onClick={() => setCardIndex(p => (p+1)%activeArticle.vocab.length)} className="p-4 bg-slate-100 rounded-full"><Icon name="chevron-right" /></button>
                                     </div>
-                                </div>
-                            )}
-
-                            {activeTab === 'quiz' && (
-                                <div className="space-y-8 py-4">
-                                    {!showScore ? (
-                                        <div className="space-y-8">
-                                            <div>
-                                                <h3 className="text-xl font-bold mb-4 flex gap-2"><span className="bg-indigo-600 text-white px-3 py-1 rounded">1</span> Which of the following is NOT true about agentic AI?</h3>
-                                                <div className="grid grid-cols-1 gap-2 pl-12">
-                                                    {['It breaks down large problems.', 'It takes initiative like a coworker.', 'It only answers questions and waits for orders.', 'It adapts in fast-changing situations.'].map((opt, i) => (
-                                                        <button key={i} onClick={() => setQuizScore({...quizScore, q1: i})} className={`text-left p-3 rounded-xl border-2 transition-all ${quizScore.q1 === i ? 'border-indigo-600 bg-indigo-50 shadow-inner' : 'border-slate-100 hover:border-slate-300'}`}>
-                                                            {String.fromCharCode(65+i)}) {opt}
-                                                        </button>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                            <button onClick={() => setShowScore(true)} className="w-full bg-indigo-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-indigo-700 shadow-lg">提交並看結果</button>
-                                        </div>
-                                    ) : (
-                                        <div className="text-center space-y-6">
-                                            <div className="text-6xl text-green-500"><Icon name="check-circle" size={80} className="mx-auto" /></div>
-                                            <h3 className="text-3xl font-bold">測驗完成！</h3>
-                                            <p className="text-lg">正確答案應包含：(C) It only answers questions (這是傳統 AI 的特點，智慧代理人會主動採取行動)。</p>
-                                            <button onClick={() => {setShowScore(false); setQuizScore({q1:null, q2:''})}} className="px-8 py-3 border-2 border-indigo-600 text-indigo-600 rounded-full font-bold">重新挑戰</button>
-                                        </div>
-                                    )}
                                 </div>
                             )}
                         </main>
-                        <footer className="mt-8 text-center text-slate-400 text-sm pb-10">
-                            © 2024 Agentic AI Learning Center | 全功能語音互動版
-                        </footer>
                     </div>
                 </div>
             );

@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>互動學習網頁：接納文化多樣性</title>
+    <title>互動學習網頁：空氣污染 - 隱形的威脅</title>
+    <!-- 使用 CDN 引入 Tailwind CSS 進行樣式排版 -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 React 與 Babel 以在瀏覽器中運行 JSX -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+    <!-- 引入 Lucide 圖標庫 -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
@@ -25,102 +28,120 @@
     <script type="text/babel">
         const { useState, useEffect } = React;
 
+        /**
+         * ==========================================
+         * 模板內容設定區 (LESSON_DATA)
+         * ==========================================
+         */
         const LESSON_DATA = {
             meta: {
-                title: "接納文化多樣性",
-                subtitle: "學習其他文化能讓你的生活更美好",
-                series: "Cultural Diversity",
-                mainTitleEn: "Embracing Cultural Diversity",
-                mainTitleZh: "接納文化多樣性"
+                title: "空氣污染：隱形的威脅",
+                subtitle: "從烹飪灶火到化石燃料，空氣污染無所不在",
+                series: "Health & Environment",
+                mainTitleEn: "AIR POLLUTION: AN INVISIBLE THREAT",
+                mainTitleZh: "空氣污染：隱形的威脅"
             },
+            // 全文對照數據
             content: [
                 {
-                    headingEn: "Cultural Influence",
-                    headingZh: "文化的影響力",
-                    contentEn: "You may never have thought about it, but much of your personality and many of your interests and values come from your culture. Your culture determines the language you speak, your tastes in food and music, your manners and your priorities. But exposure to different cultures can improve your life, inspire creativity and even help you understand your own culture better.",
-                    contentZh: "你可能從未想過，但你的個性、興趣和價值觀很大一部分都源自於你的文化。你的文化決定了你說的語言、對食物和音樂的品味、你的禮儀以及你衡量事物的優先順序。然而，接觸不同的文化可以改善你的生活、激發創意，甚至幫助你更了解自己的文化。"
+                    headingEn: "Global Crisis",
+                    headingZh: "全球危機",
+                    contentEn: "Nearly everyone on Earth—99 percent of the global population—breathes air that is more polluted than the World Health Organization (WHO) guidelines allow. Air pollution causes around 8 million deaths each year, making it one of the leading risks to human health around the world.",
+                    contentZh: "地球上幾乎所有人——全球 99% 的人口——呼吸的空氣都比世界衛生組織（WHO）準則所允許的污染更嚴重。空氣污染每年導致約 800 萬人死亡，使其成為全球人類健康面臨的主要風險之一。"
                 },
                 {
-                    headingEn: "The California Roll Story",
-                    headingZh: "加州捲的故事",
-                    contentEn: "Had it not been for cultural diversity, a number of inventions would never have existed. In the 1970s, Hidekazu Tojo, a Japanese immigrant in Canada, wanted to cater to Canadian tastes. He developed a new sushi roll using cooked crab with seaweed on the inside rather than the outside. This creation, the California roll, became very popular around the world.",
-                    contentZh: "若非文化多樣性，許多發明可能根本不會存在。1970 年代，一位在加拿大的日本移民東條英勝想迎合當地人口味。他開發出新型壽司捲，使用熟蟹肉並將海苔包在裡面。這項發明「加州捲」隨後風靡全球。"
+                    headingEn: "Primary Causes",
+                    headingZh: "主要成因",
+                    contentEn: "Vehicles, industrial production and burning fossil fuels cause outdoor air pollution, while cooking or heating with wood, dung or lamp oil over open fires or simple stoves is the primary cause of household air pollution. Tiny particles released into the air enter the bloodstream and can damage the heart, lungs and other organs.",
+                    contentZh: "汽機車、工業生產和燃燒化石燃料造成了戶外空氣污染；而在開放式營火或簡易爐灶上使用木材、糞便或燈油進行烹飪或取暖，則是家庭空氣污染的主要原因。向空氣中釋放的微小顆粒會進入血液，並損害心臟、肺部和其他器官。"
                 },
                 {
-                    headingEn: "The Birth of Jazz",
-                    headingZh: "爵士樂的誕生",
-                    contentEn: "Cultural diversity played a similar role in music. In New Orleans, USA, various musical traditions from Africa and European countries blended into a new style in the 1920s: jazz.",
-                    contentZh: "文化多樣性在音樂中也扮演類似角色。美國紐奧良匯集了來自非洲與歐洲的音樂傳統，在 1920 年代融合成新的風格：爵士樂。"
+                    headingEn: "Impact on Children",
+                    headingZh: "對兒童的衝擊",
+                    contentEn: "Tragically, children are especially vulnerable. According to the 2024 State of Global Air report, 709,000 children died of causes related to air pollution in 2021, representing 15 percent of all global deaths of children under 5.",
+                    contentZh: "不幸的是，兒童特別容易受害。根據《2024 年全球空氣狀況報告》，2021 年有 70.9 萬名兒童死於與空氣污染相關的原因，佔全球五歲以下兒童死亡總數的 15%。"
                 },
                 {
-                    headingEn: "Expectations and Values",
-                    headingZh: "期待與價值觀",
-                    contentEn: "Culture encompasses more than food and art. It includes different expectations for behavior and different values. Disagreements on points like punctuality versus greeting neighbors are often rooted in different cultural values. Challenging your own culture's ideas can help you grow and change your views.",
-                    contentZh: "文化包含的不僅是食物與藝術，還包括行為期待與價值觀。對於「準時」或「問候鄰居」的分歧通常源於文化差異。挑戰自己文化的觀念能幫助你成長並改變觀點。"
+                    headingEn: "Clean Energy & Hope",
+                    headingZh: "清潔能源與希望",
+                    contentEn: "Global awareness and stricter regulations have already cut deaths from household pollution since 1990. Organizations like Clean Cooking Alliance raise money to distribute clean-burning cookstoves in developing countries. Not only are these better for health, but they provide economic benefits by reducing cooking time.",
+                    contentZh: "自 1990 年以來，全球意識的提高和更嚴格的規範已經減少了家庭污染導致的死亡。像是「清潔烹飪聯盟」等組織籌集資金在開發中國家分發清潔能源爐灶。這些爐灶不僅對健康更好，還能透過縮短烹飪時間帶來經濟效益。"
                 },
                 {
-                    headingEn: "Growth through Courage",
-                    headingZh: "在勇氣中成長",
-                    contentEn: "Embracing cultural diversity requires courage, humility, patience, and kindness. It leaves us with a richer understanding of the world and may even inspire us to create something new, like California rolls or jazz.",
-                    contentZh: "接納文化多樣性需要勇氣、謙遜、耐心與仁慈。這讓我們對世界有更豐富的理解，並激發我們創造新事物，就像加州捲或爵士樂一樣。"
+                    headingEn: "Individual Steps",
+                    headingZh: "個人的力量",
+                    contentEn: "Individuals can take simple steps to improve air quality, such as planting air-purifying plants, using air purifiers, and switching to natural cleaning products. Clean air shouldn't be a luxury—it's a basic human right that we can all help safeguard.",
+                    contentZh: "個人可以採取簡單的步驟來改善空氣品質，例如種植淨化空氣的植物、使用空氣清淨機，以及換用天然清潔產品。乾淨的空氣不應該是奢侈品——它是我們每個人都可以協助捍衛的基本人權。"
                 }
             ],
+            // 單字清單
             vocabulary: [
-                { word: "diversity", pos: "n.", ipa: "/daɪˈvɜːrsəti/", trans: "多樣性", exEn: "The city is known for its cultural diversity.", exZh: "這座城市以其文化多樣性聞名。" },
-                { word: "exposure", pos: "n.", ipa: "/ɪkˈspoʊʒər/", trans: "接觸、體驗", exEn: "Early exposure to music can help a child's brain development.", exZh: "早期接觸音樂有助於孩童的大腦發育。" },
-                { word: "immigrant", pos: "n.", ipa: "/ˈɪmɪɡrənt/", trans: "移民", exEn: "Many immigrants struggled to adapt to the new environment.", exZh: "許多移民掙扎著適應新環境。" },
-                { word: "reluctant", pos: "adj.", ipa: "/rɪˈlʌktənt/", trans: "不情願的", exEn: "She was reluctant to admit that she was wrong.", exZh: "她不情願承認自己錯了。" },
-                { word: "cater to", pos: "v phr.", ipa: "[ˈkeɪtər tu]", trans: "迎合", exEn: "The hotel tries to cater to the needs of all its guests.", exZh: "這間飯店試圖迎合所有客人的需求。" },
-                { word: "blend", pos: "v.", ipa: "/blend/", trans: "融合", exEn: "The architect tried to blend the modern building with traditional style.", exZh: "建築師試圖將現代建築與傳統風格融合。" },
-                { word: "encompass", pos: "v.", ipa: "/ɪnˈkʌmpəs/", trans: "包含", exEn: "The festival encompasses a wide variety of activities.", exZh: "這場節慶包含多種多樣的活動。" },
-                { word: "behavior", pos: "n.", ipa: "/bɪˈheɪvjər/", trans: "行為", exEn: "The teacher praised the students for their good behavior.", exZh: "老師稱讚學生們表現良好。" },
-                { word: "tension", pos: "n.", ipa: "/ˈtenʃn/", trans: "緊張關係", exEn: "There is growing tension between the two countries.", exZh: "兩國之間的緊張局勢正在加劇。" },
-                { word: "rooted in", pos: "v phr.", ipa: "[ˈruːtɪd ɪn]", trans: "根源於", exEn: "Many of our fears are rooted in childhood experiences.", exZh: "我們的許多恐懼都根源於童年經歷。" },
-                { word: "interact", pos: "v.", ipa: "/ˌɪntərˈækt/", trans: "互動", exEn: "It's important for children to interact with their peers.", exZh: "孩子與同儕互動是很重要的。" },
-                { word: "humility", pos: "n.", ipa: "/hjuːˈmɪləti/", trans: "謙遜", exEn: "He accepted the award with great humility.", exZh: "他以非常謙遜的態度接受了這個獎項。" }
+                { word: "guideline", pos: "n.", ipa: "/ˈɡaɪd.laɪn/", trans: "指導方針、準則", exEn: "The company issued new safety guidelines for all employees.", exZh: "公司為所有員工發布了新的安全準則。" },
+                { word: "mortality", pos: "n.", ipa: "/mɔːrˈtæl.ə.t̬i/", trans: "死亡率、死亡數", exEn: "Improved medical care has significantly reduced infant mortality.", exZh: "醫療條件的改善顯著降低了嬰兒死亡率。" },
+                { word: "particle", pos: "n.", ipa: "/ˈpɑːr.t̬ɪ.kəl/", trans: "微粒、顆粒", exEn: "Dust particles in the air can trigger allergic reactions.", exZh: "空氣中的塵埃微粒會引發過敏反應。" },
+                { word: "chronic", pos: "adj.", ipa: "/ˈkrɑː.nɪk/", trans: "慢性的、長期的", exEn: "He suffers from chronic back pain due to years of heavy lifting.", exZh: "由於多年搬運重物，他患有慢性背痛。" },
+                { word: "awareness", pos: "n.", ipa: "/əˈwer.nəs/", trans: "意識、察覺", exEn: "The campaign aims to raise public awareness of climate change.", exZh: "這項活動旨在提高大眾對氣候變遷的意識。" },
+                { word: "utilize", pos: "v.", ipa: "/ˈjuː.t̬əl.aɪz/", trans: "利用、使用", exEn: "The library utilizes a modern digital system to track books.", exZh: "圖書館利用現代數位系統來追蹤書籍。" },
+                { word: "purify", pos: "v.", ipa: "/ˈpjʊr.ə.faɪ/", trans: "淨化、使純淨", exEn: "This filter is designed to purify drinking water.", exZh: "這個濾水器是設計用來淨化飲用水的。" },
+                { word: "safeguard", pos: "v.", ipa: "/ˈseɪf.ɡɑːrd/", trans: "保護、捍衛", exEn: "We must take action to safeguard our environment.", exZh: "我們必須採取行動為子孫後代守護環境。" },
+                { word: "invisible", pos: "adj.", ipa: "/ɪnˈvɪz.ə.bəl/", trans: "隱形的、看不見的", exEn: "Many gases in the atmosphere are invisible to the human eye.", exZh: "大氣中的許多氣體是肉眼看不見的。" },
+                { word: "respiratory", pos: "adj.", ipa: "/ˈres.pə.rə.tɔːr.i/", trans: "呼吸的", exEn: "Masks can help protect our respiratory system from pollution.", exZh: "口罩可以保護我們的呼吸系統不受污染。" }
             ],
+            // 文法重點
             grammar: [
                 {
-                    title: "與過去事實相反的假設句（倒裝形式）",
-                    desc: "Had it not been for... 等同於 If it had not been for...。後方接 would have + p.p.。",
-                    exEn: "Had it not been for cultural diversity, jazz would never have existed.",
-                    exZh: "若非文化多樣性，爵士樂可能根本不會存在。"
+                    title: "Not only... but (also)... 倒裝句",
+                    desc: "當 Not only 置於句首時，主句需進行「主詞與動詞倒裝」。",
+                    exEn: "Not only are these cookstoves better for health, but they provide economic benefits.",
+                    exZh: "這些爐灶不僅對健康更好，而且還能提供經濟效益。"
                 },
                 {
-                    title: "Sometimes... Other times...",
-                    desc: "描述兩種不同的情況或可能性。",
-                    exEn: "Sometimes, you may change your views; other times, you appreciate your own culture more.",
-                    exZh: "有時候你可能會改變觀點；另一些時候你會更珍惜自己的文化。"
+                    title: "倍數表達法 (Multiple Comparison)",
+                    desc: "倍數 + the + 名詞 + of... 用來描述兩者之間的差距倍數。",
+                    exEn: "They are suffering almost eight times the mortality rates of high-income countries.",
+                    exZh: "他們的死亡率幾乎是高收入國家的八倍。"
                 },
                 {
-                    title: "Rather than 的用法",
-                    desc: "意為「而不是」，用來連接兩個對等的成分。",
-                    exEn: "Choose healthy food rather than snacks.",
-                    exZh: "選擇健康食物而不是零食。"
+                    title: "分詞結構省略 (Participle Phrases)",
+                    desc: "當連接詞引導的子句主詞與主句一致時，可簡化為分詞結構。",
+                    exEn: "Once breathed into the lungs, these particles enter the bloodstream.",
+                    exZh: "一旦被吸入肺部，這些顆粒就會進入血液。"
                 }
             ],
+            // 測驗題目
             quiz: [
                 {
-                    question: "According to the article, why did Hidekazu Tojo create the California roll?",
+                    question: "According to the article, what is the primary cause of household air pollution in LMICs?",
                     options: [
-                        "Because he ran out of raw fish.",
-                        "Because he wanted to make sushi more expensive.",
-                        "To cater to the tastes of locals who were reluctant to eat raw fish.",
-                        "To show his humility to other Japanese chefs."
-                    ],
-                    correctIndex: 2,
-                    explanation: "文中提到為了迎合（cater to）不情願吃生魚的當地人口味，他才發明了加州捲。"
-                },
-                {
-                    question: "Jazz was created in New Orleans by blending musical traditions from Africa and ________.",
-                    options: [
-                        "South America",
-                        "Europe",
-                        "Asia",
-                        "Australia"
+                        "Industrial chemical plants.",
+                        "Cooking or heating with wood or dung over open fires.",
+                        "Using electronic air purifiers.",
+                        "Switching out chemical cleaning products."
                     ],
                     correctIndex: 1,
-                    explanation: "文章指出爵士樂是融和了非洲與歐洲（European countries）的音樂傳統。"
+                    explanation: "正確答案是 (B)。文中提到開發中國家的家庭污染主因是燃燒木材或糞便烹飪。"
+                },
+                {
+                    question: "Air pollution is responsible for about 1 ____ 10 deaths worldwide.",
+                    options: [
+                        "on",
+                        "in",
+                        "at",
+                        "by"
+                    ],
+                    correctIndex: 1,
+                    explanation: "正確答案是 (B)。「1 in 10」是常見的比例表達方式，意指「每十個中有一個」。"
+                },
+                {
+                    question: "Translate: '我們應該採取行動來捍衛我們的基本權利。'",
+                    options: [
+                        "We should purify our basic rights.",
+                        "We should utilize our basic rights.",
+                        "We should safeguard our basic rights.",
+                        "We should invisible our basic rights."
+                    ],
+                    correctIndex: 2,
+                    explanation: "正確答案是 (C)。safeguard 代表「捍衛、保護」。"
                 }
             ]
         };
@@ -180,7 +201,6 @@
                         </nav>
 
                         <main className="bg-white rounded-2xl shadow-md p-4 md:p-8 min-h-[600px]">
-                            {/* 1. 原文閱讀 */}
                             {activeTab === 'article' && (
                                 <div className="space-y-6">
                                     <div className="flex justify-between items-center bg-indigo-50 p-4 rounded-xl border-l-4 border-indigo-500">
@@ -205,7 +225,6 @@
                                 </div>
                             )}
 
-                            {/* 2. 全文對照 */}
                             {activeTab === 'translation' && (
                                 <div className="space-y-8">
                                     {LESSON_DATA.content.map((section, idx) => (
@@ -223,7 +242,6 @@
                                 </div>
                             )}
 
-                            {/* 3. 單字清單 */}
                             {activeTab === 'vocab_list' && (
                                 <div className="overflow-x-auto rounded-xl border border-slate-200">
                                     <table className="w-full text-left border-collapse">
@@ -261,7 +279,6 @@
                                 </div>
                             )}
 
-                            {/* 4. 翻卡練習 */}
                             {activeTab === 'flashcards' && (
                                 <div className="flex flex-col items-center justify-center space-y-8 py-10">
                                     <div className="text-center font-bold text-indigo-600">Card {cardIndex + 1} / {LESSON_DATA.vocabulary.length}</div>
@@ -294,7 +311,6 @@
                                 </div>
                             )}
 
-                            {/* 5. 文法重點 */}
                             {activeTab === 'grammar' && (
                                 <div className="space-y-6">
                                     <h3 className="text-2xl font-bold text-slate-800 border-b pb-4">課程文法解析</h3>
@@ -317,7 +333,6 @@
                                 </div>
                             )}
 
-                            {/* 6. 互動測驗 */}
                             {activeTab === 'quiz' && (
                                 <div className="space-y-8 py-4">
                                     {!showScore ? (
@@ -355,7 +370,7 @@
                             )}
                         </main>
                         <footer className="mt-8 text-center text-slate-400 text-sm pb-10">
-                            © 2024 Interactive Learning Hub | 接納文化多樣性
+                            © 2024 Interactive Learning Hub | 空氣污染：隱形的威脅
                         </footer>
                     </div>
                 </div>
